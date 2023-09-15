@@ -1,7 +1,33 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Weather App">
 	
+	<div class=" flex flex-col bg-blue-600 min-w-0 ">
+    
+		<p class=" text-white text-shadow-slate-700 text-4xl font-black self-center my-3 ">Weather App</p>
+
+		<div class=" flex items-center justify-between mx-2 mb-4 ">
+			<input class=" h-8 " type="text" placeholder="Search for area">
+	
+			<button class="input-button">
+				<svg xmlns="http://www.w3.org/2000/svg" width="124" height="48" viewBox="0 0 124 48" fill="none">
+				  <path d="M0 0H124V48H0V0Z" fill="url(#paint0_linear_4_4)"/>
+				  <defs>
+				  <linearGradient id="paint0_linear_4_4" x1="62" y1="0" x2="62" y2="48" gradientUnits="userSpaceOnUse">
+				  <stop offset="0.395833" stop-color="#2E8EA4"/>
+				  <stop offset="0.885417" stop-color="#52676B" stop-opacity="0.44"/>
+				  </linearGradient>
+				  </defs>
+				  <text x="30" y="30" fill="black" font-size="16" font-family="Arial Black" >Search</text>          
+				</svg>
+			</button>
+
+		</div>
+		
+	</div>
+
 </Layout>
