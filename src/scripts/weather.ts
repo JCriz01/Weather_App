@@ -12,7 +12,6 @@ const weatherObj={
 	condition: ''
 }
 
-
 //function to create the main weather card on the top portion of the page
 //making the main weather card
 function createMainWeatherCard(){
@@ -25,11 +24,11 @@ function createMainWeatherCard(){
 
 	weatherDisplayElem.setAttribute('id','weather-display');
 	//setting css
-	weatherDisplayElem.classList.add('flex','flex-col','self-center',
-	'shadow-xl', 'rounded-lg','bg-gray-100','mt-5','w-3/5','items-center');
+	weatherDisplayElem.classList.add('flex','flex-col','self-center','p-1.5',
+	'shadow-xl', 'rounded-lg','bg-gray-100','mt-5','w-3/4','items-center','h-1/3');
 	
-	const image= new Image(128,128);
-	const location=document.createElement('h3');
+	const image= new Image(80,80);
+	const location=document.createElement('h2');
 	location.textContent=weatherObj.location.name;
 	location.classList.add('self-center')
 	weatherDisplayElem.appendChild(location);
@@ -41,9 +40,9 @@ function createMainWeatherCard(){
 	info.textContent=weatherObj.condition;
 	weatherDisplayElem.appendChild(info);
 
-	//check here
+	
 	const highTemperatureF=document.createElement('p');
-	highTemperatureF.textContent=weatherObj.forecast[0].day.maxtemp_f;
+	highTemperatureF.textContent=`Todays high is ${weatherObj.forecast[0].day.maxtemp_f}°`;
 	weatherDisplayElem.appendChild(highTemperatureF);
 
 	if(parentContainer)
@@ -53,52 +52,62 @@ function createMainWeatherCard(){
 //function to create a card based on the locations info
 function dayCard(weatherCardElem: HTMLDivElement){
 
+	//parent container
 	const parentContainer=document.createElement('div');
-	const container=document.createElement('div');
+
+	parentContainer.classList.add('flex')
 	const image=new Image(64,64);
 
-	const temperatureElems=document.createElement('div');
-	const maxTemp=document.createElement('div');
-	const minTemp=document.createElement('div');
+	const temperatureContainer=document.createElement('div');
+	temperatureContainer.classList.add('flex','flex-col','justify-between');
+
+	const maxTemp=document.createElement('p');
+	const minTemp=document.createElement('p');
 
 	if(weatherCardElem.firstElementChild?.textContent==='Today'){
 		image.src=weatherObj.forecast[0].day.condition.icon;
-		maxTemp.textContent=weatherObj.forecast[0].day.maxtemp_f;
-		minTemp.textContent=weatherObj.forecast[0].day.mintemp_f
+
+		maxTemp.textContent=`High, ${weatherObj.forecast[0].day.maxtemp_f}°`;
+		minTemp.textContent=`Low, ${weatherObj.forecast[0].day.mintemp_f}°`;
 	}
 	else if(weatherCardElem.firstElementChild?.textContent==='Tomorrow'){
 		image.src=weatherObj.forecast[1].day.condition.icon;
-		maxTemp.textContent=weatherObj.forecast[1].day.maxtemp_f;
-		minTemp.textContent=weatherObj.forecast[1].day.mintemp_f
+
+		maxTemp.textContent=`High, ${weatherObj.forecast[1].day.maxtemp_f}°`;
+		minTemp.textContent=`Low, ${weatherObj.forecast[1].day.mintemp_f}°`;
 	}
 	else{
 		image.src=weatherObj.forecast[2].day.condition.icon;
-		maxTemp.textContent=weatherObj.forecast[2].day.maxtemp_f;
-		minTemp.textContent=weatherObj.forecast[2].day.mintemp_f
+
+		maxTemp.textContent=`High, ${weatherObj.forecast[2].day.maxtemp_f}°`;
+		minTemp.textContent=`Low, ${weatherObj.forecast[2].day.mintemp_f}°`;
 	}
-	temperatureElems.appendChild(maxTemp);
-	temperatureElems.appendChild(minTemp);
-
-	container.appendChild(image);
-	container.appendChild(temperatureElems);
+	temperatureContainer.appendChild(maxTemp);
+	temperatureContainer.appendChild(minTemp);
 
 
-	parentContainer.appendChild(container);
+	parentContainer.appendChild(image);
+
+	parentContainer.appendChild(temperatureContainer);
+
 	weatherCardElem.appendChild(parentContainer);
 }
 
 //creating sub weather cards
 function createDayWeatherCards(){
+
+	//helper function to add a class to a div element
+	function addClass(element: HTMLDivElement| undefined){
+		element?.classList.add('flex','flex-col','self-center','shadow-xl',
+		'rounded-lg','bg-gray-100','w-3/5','items-center','my-9','h-1/3','justify-evenly');
+	}
+
+	//parent container
 	const bodyContainer=document.querySelector('body');
 
-	const parentContainer=document.createElement('div');
-
-	parentContainer.classList.add('weather-day-cards');
-	parentContainer.classList.add('flex','flex-col')
 
 	const weatherDayOneCard=document.createElement('div');
-	weatherDayOneCard.classList.add('flex','flex-col','self-center','shadow-xl',
-	'rounded-lg','bg-gray-100','w-2/5','items-center','my-9');
+	addClass(weatherDayOneCard);
 
 	const title1=document.createElement('h4');
 	title1.textContent='Today';
@@ -106,8 +115,7 @@ function createDayWeatherCards(){
 	dayCard(weatherDayOneCard);
 
 	const weatherDayTwoCard=document.createElement('div');
-	weatherDayTwoCard.classList.add('flex','flex-col','self-center','shadow-xl',
-	'rounded-lg','bg-gray-100','w-2/5','items-center','my-9');
+	addClass(weatherDayTwoCard);
 
 	const title2=document.createElement('h4');
 	title2.textContent='Tomorrow';
@@ -115,19 +123,15 @@ function createDayWeatherCards(){
 	dayCard(weatherDayTwoCard);
 
 	const weatherDayThreeCard=document.createElement('div');
-	weatherDayThreeCard.classList.add('flex','flex-col','self-center','shadow-xl',
-	'rounded-lg','bg-gray-100','w-2/5','items-center','my-9');
-
+	addClass(weatherDayThreeCard);
 	const title3=document.createElement('h4');
 	title3.textContent=weatherObj.forecast[weatherObj.forecast.length-1].date;
 	weatherDayThreeCard.appendChild(title3);
 	dayCard(weatherDayThreeCard);
 
-	parentContainer.appendChild(weatherDayOneCard);
-	parentContainer.appendChild(weatherDayTwoCard);
-	parentContainer.appendChild(weatherDayThreeCard);
-
-	bodyContainer?.appendChild(parentContainer);
+	bodyContainer?.appendChild(weatherDayOneCard);
+	bodyContainer?.appendChild(weatherDayTwoCard);
+	bodyContainer?.appendChild(weatherDayThreeCard);
 }
 
 //function to create and show the weather cards on the webpage
