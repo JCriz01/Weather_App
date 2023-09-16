@@ -12,13 +12,33 @@ const weatherObj={
 	condition: ''
 }
 
+let screenSize=window.innerWidth;
+console.log(screenSize);
+
 //function to create the main weather card on the top portion of the page
 //making the main weather card
-function createMainWeatherCard(){
+function createMainWeatherCard(size: number=screenSize){
 
-	//getting parent container
-	const parentContainer=document.querySelector('body');
+	let parentElem=null;
 
+	if(size > 640){
+
+		const weatherContainer=document.createElement('div');
+		weatherContainer.classList.add('flex','min-h-screen');
+
+		weatherContainer.setAttribute('id','weather-container');
+
+		parentElem=document.querySelector('body');
+		parentElem?.appendChild(weatherContainer);
+
+		parentElem=weatherContainer;
+
+	}
+	else{
+		parentElem=document.querySelector('body');
+
+	}
+	
 	//creating the weather card
 	const weatherDisplayElem=document.createElement('div');
 
@@ -26,7 +46,9 @@ function createMainWeatherCard(){
 	//setting css
 	weatherDisplayElem.classList.add('flex','flex-col','self-center','p-1.5',
 	'shadow-xl', 'rounded-lg','bg-gray-100','mt-5','w-3/4','items-center','h-1/3');
-	
+
+	weatherDisplayElem.classList.add('sm:w-2/5');
+
 	const image= new Image(80,80);
 	const location=document.createElement('h2');
 	location.textContent=weatherObj.location.name;
@@ -40,13 +62,14 @@ function createMainWeatherCard(){
 	info.textContent=weatherObj.condition;
 	weatherDisplayElem.appendChild(info);
 
-	
+
 	const highTemperatureF=document.createElement('p');
 	highTemperatureF.textContent=`Todays high is ${weatherObj.forecast[0].day.maxtemp_f}°`;
 	weatherDisplayElem.appendChild(highTemperatureF);
 
-	if(parentContainer)
-		parentContainer.appendChild(weatherDisplayElem);
+	if(parentElem)
+		parentElem.appendChild(weatherDisplayElem);
+	
 }
 
 //function to create a card based on the locations info
@@ -94,17 +117,24 @@ function dayCard(weatherCardElem: HTMLDivElement){
 }
 
 //creating sub weather cards
-function createDayWeatherCards(){
+function createDayWeatherCards(size: number=screenSize){
 
 	//helper function to add a class to a div element
-	function addClass(element: HTMLDivElement| undefined){
+	function addClass(element: HTMLDivElement){
 		element?.classList.add('flex','flex-col','self-center','shadow-xl',
 		'rounded-lg','bg-gray-100','w-3/5','items-center','my-9','h-1/3','justify-evenly');
 	}
-
-	//parent container
-	const bodyContainer=document.querySelector('body');
-
+	let parentElem=null;
+	if(size > 640){
+		const bodyElem=document.getElementById('weather-container');
+		const subWeatherCardsContainer=document.createElement('div');
+		subWeatherCardsContainer.classList.add('flex','flex-col','w-full');
+		bodyElem?.appendChild(subWeatherCardsContainer);
+		parentElem=subWeatherCardsContainer;
+	}
+	else{
+		parentElem=document.querySelector('body');
+	}
 
 	const weatherDayOneCard=document.createElement('div');
 	addClass(weatherDayOneCard);
@@ -129,13 +159,13 @@ function createDayWeatherCards(){
 	weatherDayThreeCard.appendChild(title3);
 	dayCard(weatherDayThreeCard);
 
-	bodyContainer?.appendChild(weatherDayOneCard);
-	bodyContainer?.appendChild(weatherDayTwoCard);
-	bodyContainer?.appendChild(weatherDayThreeCard);
+	parentElem?.appendChild(weatherDayOneCard);
+	parentElem?.appendChild(weatherDayTwoCard);
+	parentElem?.appendChild(weatherDayThreeCard);
 }
-
+//start here
 //function to create and show the weather cards on the webpage
-function showWeatherInfo(){
+function showWeatherInfo(size: number=screenSize){
 
 	//getting the parent container
 	const parentContainer=document.querySelector('body');
@@ -147,16 +177,8 @@ function showWeatherInfo(){
 				parentContainer.children[i].remove();
 			}
 		}
-
-	createMainWeatherCard();
-	createDayWeatherCards();
-
-	//const container=document.querySelector('.weather-display');
-	
-}
-
-function createExpandedWeatherInfo(){
-
+	createMainWeatherCard(size);
+	createDayWeatherCards(size);
 }
 
 //getting api from the server
@@ -179,7 +201,7 @@ async function weather(locationString: string | undefined){
 	console.log('this is the object that we are using ',weatherObj);
 
 	//showing weather cards
-	showWeatherInfo();
+	showWeatherInfo(screenSize);
 }
 
 //starting point of the program
@@ -194,4 +216,13 @@ export function start(){
 			let searchInput=document.querySelector('input');
 			weather(searchInput?.value);
 		});
+
+
+	window.addEventListener('resize',()=>{
+		let currSize=window.innerWidth;
+		console.log(currSize);
+		if(weatherObj.forecast.length !==0){
+			showWeatherInfo(currSize);
+		}
+	});
 }
