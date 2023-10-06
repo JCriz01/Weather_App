@@ -21,6 +21,11 @@ async function weather(locationString: string | undefined){
 		});
 
 	const json=await weatherInfo.json();
+
+	return json;
+	
+	//replacing this with the function that will update the weather object
+
 	weatherObj.imageURL=json.current.condition.icon;
 	weatherObj.location.country=json.location.country;
 	weatherObj.location.name=json.location.name;
