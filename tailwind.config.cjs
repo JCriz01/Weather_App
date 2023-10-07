@@ -8,7 +8,7 @@ module.exports = {
 				gilroyextrabold: ['Gilroy-ExtraBold', 'sans-serif'],
 			},
 			backgroundColor: {
-				'darkmode': '#222A36'
+				'darkmode': '#1a1c1e'
 			},
 		},
 	},

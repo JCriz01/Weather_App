@@ -3,8 +3,42 @@ import Layout from '../layouts/Layout.astro';
 
 ---
 
-<Layout title="Weather App">
+<Layout title="SkySavvy">
+
+	<div class="p-1.5 rounded-xl bg-neutral-900 m-2 ">
+
+		<div class="flex ">
+
+			<div class="w-6 flex">
+				<img class="self-center" src="/close-layout.svg" alt="close">
+			</div>
 	
+	
+			<div 
+				class="flex justify-between items-center grow ">
+	
+	
+				<div class="flex">
+					<div class="text-black">
+						<input placeholder="Search for" type="text">
+					</div>
+				</div>
+				<button type="submit" class="text-base px-3 py-1 rounded-lg" style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);">
+					Search
+				</button>
+		
+			</div>
+		</div>
+	</div>
+	
+	<!--- hding the icon if the heading is visible -->
+	<div class="w-6 absolute hidden ">
+		<img src="/burger-layout.svg" alt="burger-layout-icon">
+	</div>
+
+	<div class="rounded-3xl m-2 ">
+		<img class="rounded-3xl " src="/moonlight_city.png" alt="">
+	</div>
 </Layout>
 
 <script src="../scripts/main.ts"></script>
