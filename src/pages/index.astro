@@ -1,56 +1,73 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
+import MobileSwitcher from '../components/MobileSwitcher.astro';
+import CurrentWeather from '../components/CurrentWeather.astro';
+import Forecast from '../components/Forecast.astro';
 ---
 
 <Layout title="SkySavvy">
 
-	<div id="header-container"
-		class="p-1.5 rounded-xl bg-neutral-900 m-2  ">
+	<div class="flex flex-col ">
 
-		<div class="flex ">
-
-			<button id="close-header-btn" class=" animate-pulse w-6 flex rounded-lg mr-2 text-base hover:scale-105 active:translate-y-1 " style="background: rgb(228,94,94);
-			background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);">
-				<img class="self-center " src="/close-layout.svg" alt="close">
-				
-			</button>
+		<div id="header-container"
+			class="p-1.5 rounded-xl bg-neutral-900 m-2  ">
 	
+			<div class="flex ">
 	
-			<div 
-				class="flex justify-between items-center grow ">
-	
-	
-				<div class="flex">
-					<div class="text-black">
-						<input class="rounded-sm" placeholder="Search For Area" type="text">
-					</div>
-				</div>
-
-				<button type="submit" 
-					class="text-base px-3 py-1 rounded-lg hover:scale-105 active:translate-y-1 " 
-					style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);">
-					Search
+				<button id="close-header-btn" class=" animate-pulse w-6 flex rounded-lg mr-2 text-base hover:scale-105 active:translate-y-1 " style="background: rgb(228,94,94);
+				background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);">
+					<img class="self-center " src="/close-layout.svg" alt="close">
+					
 				</button>
 		
+		
+				<div 
+					class="flex justify-between items-center grow ">
+		
+		
+					<div class="flex">
+						<div class="text-black">
+							<input class="rounded-sm" placeholder="Search For Area" type="text">
+						</div>
+					</div>
+	
+					<button id="weather-search" type="submit" 
+						class="text-base px-3 py-1 rounded-lg hover:scale-105 active:translate-y-1 " 
+						style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);">
+						Search
+					</button>
+			
+				</div>
 			</div>
 		</div>
-	</div>
+		
+		<!--- hding the burger icon if the heading is visible -->
+		
+		<div class="rounded-3xl m-2 relative flex flex-col ">
+			<button id="open-header-btn" class="w-6 absolute hidden animate-pulse ">
+				<img src="/burger-layout.svg" alt="burger-layout-icon">
+			</button>
 	
-	<!--- hding the icon if the heading is visible -->
+			<img id="weather-image" class="rounded-3xl " src="/moonlight_city.png" alt="">
 	
-	<div class="rounded-3xl m-2 ">
-		<button id="open-header-btn" class="w-6 absolute hidden animate-pulse ">
-			<img src="/burger-layout.svg" alt="burger-layout-icon">
-		</button>
-		<img class="rounded-3xl " src="/moonlight_city.png" alt="">
+			<div class="absolute self-end top-1/3 ">
+				<h1 class="font-gilroyextrabold text-5xl font-extrabold text-center ">
+					0°F
+				</h1>
+				<div class="text-base ">
+					feels like __
+				</div>
+			</div>
+			
+		</div>
 	</div>
 
+	<CurrentWeather/>
 
-	<div class="bg-neutral-900 rounded-xl ">
-		<div></div>
-		<div></div>
-	</div>
+	<Forecast/>
+
+	<MobileSwitcher/>
+
 </Layout>
 
 <script src="../scripts/main.ts"></script>
