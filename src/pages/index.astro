@@ -5,11 +5,12 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="SkySavvy">
 
-	<div id="header-container" class="p-1.5 rounded-xl bg-neutral-900 m-2  ">
+	<div id="header-container"
+		class="p-1.5 rounded-xl bg-neutral-900 m-2  ">
 
 		<div class="flex ">
 
-			<button id="close-header-btn" class="w-6 flex rounded-lg mr-2 text-base hover:scale-105 active:translate-y-1 " style="background: rgb(228,94,94);
+			<button id="close-header-btn" class=" animate-pulse w-6 flex rounded-lg mr-2 text-base hover:scale-105 active:translate-y-1 " style="background: rgb(228,94,94);
 			background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);">
 				<img class="self-center " src="/close-layout.svg" alt="close">
 				
@@ -39,10 +40,16 @@ import Layout from '../layouts/Layout.astro';
 	<!--- hding the icon if the heading is visible -->
 	
 	<div class="rounded-3xl m-2 ">
-		<button id="open-header-btn" class="w-6 absolute hidden ">
+		<button id="open-header-btn" class="w-6 absolute hidden animate-pulse ">
 			<img src="/burger-layout.svg" alt="burger-layout-icon">
 		</button>
 		<img class="rounded-3xl " src="/moonlight_city.png" alt="">
+	</div>
+
+
+	<div class="bg-neutral-900 rounded-xl ">
+		<div></div>
+		<div></div>
 	</div>
 </Layout>
 
