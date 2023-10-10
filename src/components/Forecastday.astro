@@ -1,0 +1,15 @@
+---
+const {imgSrc, low,high, condition}=Astro.props;
+---
+
+<div class="flex items-center justify-evenly border-b-2 border-gray-500 ">
+    <img src={imgSrc} alt="">
+
+    <div class="flex items-center ">
+        <p>{low}</p>
+        <div class=" bg-slate-500 h-0.5 w-5 mx-2 "></div>
+        <p>{high}</p>
+    </div>
+    <p>{condition}</p>    
+
+</div>
