@@ -1,0 +1,54 @@
+---
+import Hourlyforecast from "./hourlyforecast.astro";
+---
+
+<div class="hidden ">
+    <div class="flex flex-col m-2">
+
+        <div id="current-weather-info" class="grid grid-cols-3 gap-2 ">
+
+            <div class="rounded-3xl p-7 " style=" background: rgb(131,58,180);
+            background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); ">
+                <div><img class="w-5" src="/pressure.svg" alt=""></div>
+                <div class="">
+                    <div>Wind</div>
+                    <div id="wind-speed">
+                        0km/h
+                    </div>
+                </div>
+            </div>
+            <div class="rounded-3xl p-7 " style=" background: rgb(131,58,180);
+            background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); ">
+                <div><img class="w-5" style="" src="/thermometer-outline.svg" alt=""></div>
+                <div class="">
+                    <div>Pressure</div>
+                    <div>0MB</div>
+                </div>
+            </div>
+            <div class="rounded-3xl p-7" style=" background: rgb(131,58,180);
+            background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); "> 
+                <div><img class="w-5" src="/water_drop.svg" alt=""></div>
+                <div class="">
+                    <div>Humidity</div>
+                    <div>0%</div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div id="current-temperature" class="flex justify-evenly rounded-3xl bg-neutral-900 my-2 ">
+
+            <!---  Current Day -->
+            <Hourlyforecast hourTime="now" imgSource="/weathericons/day/113.png" currentTemp="[temp]"/>
+            <!--- hour later  -->
+            <Hourlyforecast hourTime="1 hour" imgSource="/weathericons/day/113.png" currentTemp="[temp]"/>
+            <!--- 2 hours later -->
+            <Hourlyforecast hourTime="2 hour" imgSource="/weathericons/day/113.png" currentTemp="[temp]"/>
+            <!--- 3 hours later -->
+            <Hourlyforecast hourTime="3 hour" imgSource="/weathericons/day/113.png" currentTemp="[temp]"/>
+            <!--- 4 hours later -->
+            <Hourlyforecast hourTime="4 hour" imgSource="/weathericons/day/113.png" currentTemp="[temp]"/>
+
+        </div>
+    </div>
+</div>
