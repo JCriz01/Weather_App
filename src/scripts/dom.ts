@@ -6,20 +6,22 @@ function createDisplayer(): void {
 }
 
 export function firstTimeDisplayer(): void {
-	const container = document.querySelector('body');
-
-	console.log(container);
+	const displayer = document.querySelector('#first-time-displayer');
+	const firstTimeBtn = document.querySelector('#first-time-btn');
 
 	if (FirstVisit()) {
+		displayer?.classList.remove('hidden');
+	} else {
+		displayer?.classList.add('hidden');
 	}
 }
 
 function FirstVisit(): boolean {
 	if (!localStorage.getItem('firstVisit')) {
-		localStorage.setItem('firstVisit', 'false');
-		return false;
-	} else {
 		localStorage.setItem('firstVisit', 'true');
 		return true;
+	} else {
+		localStorage.setItem('firstVisit', 'false');
+		return false;
 	}
 }
