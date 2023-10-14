@@ -11,7 +11,7 @@ import Forecast from '../components/Forecast.astro';
 			<div class="flex">
 				<button
 					id="close-header-btn"
-					class="mr-2 flex w-6 animate-pulse rounded-lg text-base hover:scale-105 active:translate-y-1
+					class="mr-2 flex w-6 animate-pulse rounded-lg text-base hover:scale-105
 					md:hidden"
 					style="background: rgb(228,94,94); background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);"
 				>
@@ -49,7 +49,10 @@ import Forecast from '../components/Forecast.astro';
 
 		<!--- hding the burger icon if the heading is visible -->
 
-		<div id="weather-data" class="relative m-2 flex hidden flex-col rounded-3xl">
+		<div
+			id="weather-data"
+			class="relative m-2 flex hidden flex-col rounded-3xl"
+		>
 			<button id="open-header-btn" class="absolute hidden w-6 animate-pulse">
 				<img src="/Weather_App/burger-layout.svg" alt="burger-layout-icon" />
 			</button>

@@ -5,7 +5,8 @@ import {
 	deleteLoadingIndicator,
 	createFirstTimePopUp,
 	deleteFirstTimePopUp,
-	DisplayFirstTimePopUp
+	DisplayFirstTimePopUp,
+	showWeatherData
 } from './dom';
 
 const openBtn = document.getElementById('open-header-btn');
@@ -13,10 +14,6 @@ const openBtn = document.getElementById('open-header-btn');
 const container = document.getElementById('header-container');
 const closeHeaderBtn = document.getElementById('close-header-btn');
 const weatherBtn = document.getElementById('weather-search');
-const weatherDataElem = document.getElementById('weather-data');
-const currWeather = document.querySelector('#current-weather-wrapper');
-const forecastElem = document.querySelector('#forecast-wrapper');
-
 //get only input in html
 const weatherInput = document.querySelector('input');
 
@@ -50,36 +47,26 @@ function isInputValid(input: HTMLInputElement | null): boolean {
 	return input?.checkValidity() ?? false;
 }
 
-
 function main() {
+	closeHeaderBtn?.setAttribute('disabled', 'true');
+	console.log(closeHeaderBtn?.hasAttribute('disabled'));
+
 	if (isFirstVisit()) {
 		DisplayFirstTimePopUp();
 	}
 
 	weatherBtn?.addEventListener('click', (Event) => {
+		closeHeaderBtn?.removeAttribute('disabled');
+		closeHeaderBtn?.classList.add('active:translate-y-1');
 		console.log('clicked');
 
 		if (isInputValid(weatherInput)) {
 			Event.preventDefault();
 
-			const loadingIndicatiorPromise = createLoadingIndicator();
-			const weatherPromise = getWeatherAPI(weatherInput?.value);
-
-			Promise.all([loadingIndicatiorPromise, weatherPromise])
-				.then(() => {
-					deleteLoadingIndicator();
-					weatherDataElem?.classList.remove('hidden');
-					currWeather?.classList.remove('hidden');
-					forecastElem?.classList.remove('hidden');
-				})
-				.catch(() => {
-					//TODO: add error handling
-					console.log('failed');
-				});
+			showWeatherData(weatherInput);
 		}
 	});
 
-	//TODO: add logic to disable hiding the header BEFORE the weather data is loaded from the API
 	openBtn?.addEventListener('click', (Event) => {
 		openBtn?.classList.toggle('hidden');
 
@@ -87,7 +74,9 @@ function main() {
 	});
 
 	closeHeaderBtn?.addEventListener('click', () => {
-		container?.classList.toggle('hidden');
+		console.log(closeHeaderBtn.hasAttribute('disabled'));
+		if (!closeHeaderBtn.hasAttribute('disabled'))
+			container?.classList.toggle('hidden');
 		openBtn?.classList.toggle('hidden');
 	});
 }

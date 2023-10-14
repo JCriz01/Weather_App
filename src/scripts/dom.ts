@@ -1,3 +1,9 @@
+import { weatherObj, weather } from './weather';
+
+const weatherDataElem = document.querySelector('#weather-data');
+const forecastElem = document.querySelector('#forecast-wrapper');
+const currWeatherElem = document.querySelector('current-weather-wrapper');
+
 export function createFirstTimePopUp() {
 	const bodyElem = document.querySelector('body');
 	const popUpElem = document.createElement('div');
@@ -49,7 +55,6 @@ export function createFirstTimePopUp() {
 	popUpElem.appendChild(pInfo2Elem);
 	popUpElem.appendChild(popUpBtn);
 
-	bodyElem?.appendChild(popUpElem);
 	bodyElem?.insertBefore(popUpElem, bodyElem.lastElementChild);
 }
 
@@ -129,4 +134,16 @@ export function isFirstVisit(): boolean {
 		localStorage.setItem('firstVisit', 'false');
 		return false;
 	}
+}
+
+export function showWeatherData(input: HTMLInputElement) {
+	const loadingIndicatorPromise = createLoadingIndicator();
+	const weatherDataPromise = weather(input.value);
+
+	Promise.all([loadingIndicatorPromise, weatherDataPromise]).then(() => {
+		deleteLoadingIndicator();
+		weatherDataElem?.classList.remove('hidden');
+		currWeatherElem?.classList.remove('hidden');
+		forecastElem?.classList.remove('hidden');
+	});
 }
