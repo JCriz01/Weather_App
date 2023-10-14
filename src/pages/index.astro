@@ -22,10 +22,12 @@ import Forecast from '../components/Forecast.astro';
 					/>
 				</button>
 
-				<div class="flex grow items-center justify-between">
+				<form class="flex grow items-center justify-between">
 					<div class="flex">
 						<div class="text-black">
 							<input
+								required
+								pattern="^[^0-9]*$"
 								class="rounded-sm"
 								placeholder="Search For Area"
 								type="text"
@@ -36,18 +38,18 @@ import Forecast from '../components/Forecast.astro';
 					<button
 						id="weather-search"
 						type="submit"
-						class="rounded-lg px-3 py-1 text-base hover:scale-105 active:translate-y-1"
+						class="rounded-lg px-3 py-1 text-base active:translate-y-1"
 						style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);"
 					>
 						Search
 					</button>
-				</div>
+				</form>
 			</div>
 		</div>
 
 		<!--- hding the burger icon if the heading is visible -->
 
-		<div class="relative m-2 flex hidden flex-col rounded-3xl">
+		<div id="weather-data" class="relative m-2 flex hidden flex-col rounded-3xl">
 			<button id="open-header-btn" class="absolute hidden w-6 animate-pulse">
 				<img src="/Weather_App/burger-layout.svg" alt="burger-layout-icon" />
 			</button>
@@ -69,27 +71,6 @@ import Forecast from '../components/Forecast.astro';
 		<CurrentWeather />
 
 		<Forecast />
-	</div>
-
-	<div
-		id="first-time-displayer"
-		class="relative hidden h-4/5 w-2/3 self-center"
-	>
-		<div class="flex flex-col items-center rounded-lg bg-zinc-900 p-5">
-			<h1 class="pb-5 text-xl">SkySavvy Weather App</h1>
-			<p class="pb-3 text-center">
-				Weather display is currently empty, to search for an area with accurate
-				date information press the Search button.
-			</p>
-			<button
-				id="first-time-view-btn"
-				class="rounded-md px-3 py-1 text-base text-base hover:scale-105 active:translate-y-1"
-				style=" background: rgb(131,58,180);
-			background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(242,179,179,1) 52%, rgba(252,176,69,1) 100%); "
-			>
-				Sounds Good
-			</button>
-		</div>
 	</div>
 
 	<MobileSwitcher />
