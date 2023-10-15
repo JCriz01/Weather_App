@@ -65,10 +65,13 @@ import Forecast from '../components/Forecast.astro';
 			/>
 
 			<div class="absolute top-1/3 self-end">
-				<h1 class="text-center font-gilroyextrabold text-5xl font-extrabold">
+				<h1
+					id="main-temperature-element"
+					class="text-center font-gilroyextrabold text-5xl font-extrabold"
+				>
 					0°F
 				</h1>
-				<div class="text-base">feels like __</div>
+				<div id="sub-weather-element" class="text-base">feels like __</div>
 			</div>
 		</div>
 		<CurrentWeather />

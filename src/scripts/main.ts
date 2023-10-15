@@ -1,5 +1,5 @@
 import { weatherObj, weather } from './weather';
-import { isFirstVisit, DisplayFirstTimePopUp, showWeatherData } from './dom';
+import { DisplayFirstTimePopUp, showWeatherData } from './dom';
 
 const openBtn = document.getElementById('open-header-btn');
 
@@ -21,6 +21,16 @@ function isInputValid(input: HTMLInputElement | null): boolean {
 	return input?.checkValidity() ?? false;
 }
 
+function isFirstVisit(): boolean {
+	if (!localStorage.getItem('firstVisit')) {
+		localStorage.setItem('firstVisit', 'true');
+		return true;
+	} else {
+		localStorage.setItem('firstVisit', 'false');
+		return false;
+	}
+}
+
 function main() {
 	closeHeaderBtn?.setAttribute('disabled', 'true');
 	console.log(closeHeaderBtn?.hasAttribute('disabled'));
@@ -30,11 +40,12 @@ function main() {
 	}
 
 	weatherBtn?.addEventListener('click', (Event) => {
-		closeHeaderBtn?.removeAttribute('disabled');
-		closeHeaderBtn?.classList.add('active:translate-y-1');
 		console.log('clicked');
 
 		if (isInputValid(weatherInput)) {
+			closeHeaderBtn?.removeAttribute('disabled');
+			closeHeaderBtn?.classList.add('active:translate-y-1');
+
 			Event.preventDefault();
 
 			showWeatherData(weatherInput);

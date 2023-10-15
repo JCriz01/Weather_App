@@ -185,16 +185,6 @@ export function DisplayFirstTimePopUp(): void {
 	});
 }
 
-export function isFirstVisit(): boolean {
-	if (!localStorage.getItem('firstVisit')) {
-		localStorage.setItem('firstVisit', 'true');
-		return true;
-	} else {
-		localStorage.setItem('firstVisit', 'false');
-		return false;
-	}
-}
-
 export async function showWeatherData(input: HTMLInputElement) {
 	let isValid = false;
 	function toggleWeatherData(isWeatherApiValid: boolean) {
@@ -217,7 +207,8 @@ export async function showWeatherData(input: HTMLInputElement) {
 
 		deleteLoadingIndicator();
 		getWeatherAPIJson(weatherData);
-		console.log(weatherData);
+		//console.log(weatherData);
+		updateWeatherDOM();
 		toggleWeatherData(true);
 	} catch (error) {
 		if (bodyContainer?.children[1].id === 'loading-indicator') {
@@ -226,4 +217,72 @@ export async function showWeatherData(input: HTMLInputElement) {
 		createErrorIndicator();
 		toggleWeatherData(false);
 	}
+}
+
+export function updateWeatherDOM() {
+	const mainTempElem = document.querySelector('#main-temperature-element');
+	mainTempElem.textContent = `${weatherObj.currentInfo.temp_f}°F`;
+
+	const subWeatherElem = document.querySelector('#sub-weather-element');
+	subWeatherElem.textContent = `Feels Like ${weatherObj.currentInfo.feelslike_f}°F`;
+	const weatherTempImg: HTMLImageElement =
+		document.querySelector('#weather-image');
+
+	const stringMatcher: string = weatherObj.condition;
+	if (
+		stringMatcher.includes('rain') ||
+		stringMatcher.includes('Rain') ||
+		stringMatcher.includes('Drizzle') ||
+		stringMatcher.includes('drizzle')
+	) {
+		//TODO: Find better image for rain conditions
+		weatherTempImg.src = '/Weather_App/sunny-forest.png';
+	}
+	if (stringMatcher.includes('Sunny') || stringMatcher.includes('sunny')) {
+		weatherTempImg.src = '/Weather_App/sunny-forest.png';
+	}
+	if (stringMatcher.includes('cloudy') || stringMatcher.includes('Cloudy')) {
+		weatherTempImg.src = '/Weather_App/moonlight_city.png';
+	}
+	if (
+		stringMatcher.includes('Overcast') ||
+		stringMatcher.includes('overcast')
+	) {
+		//TODO: Place holder for actual image source on overcast condition
+		weatherTempImg.src = '/Weather_App/';
+	}
+	if (
+		stringMatcher.includes('Snow') ||
+		stringMatcher.includes('snow') ||
+		stringMatcher.includes('Sleet') ||
+		stringMatcher.includes('sleet')
+	) {
+		weatherTempImg.src = '/Weather_App/snowy-mountain.png';
+	}
+
+	function updateCurrentWeatherCardsDOM() {
+		const windSpeedElem: HTMLDivElement = document.querySelector('#wind-speed');
+
+		windSpeedElem.textContent = `${weatherObj.currentInfo?.gust_kph}Km/h`;
+
+		const pressureElem = document.querySelector('#pressure');
+
+		pressureElem.textContent = `${weatherObj.currentInfo.pressure_mb}MB`;
+
+		const humidityElem = document.querySelector('#humidity');
+
+		humidityElem.textContent = `${weatherObj.currentInfo.humidity}%`;
+
+		const currentTempList = document.querySelector('#current-temperature')
+			?.children;
+		console.log(currentTempList);
+		function currentDayHelper(
+			index: number,
+			imageSrc: string,
+			temperature: string
+		) {
+			const title = document.querySelector('');
+		}
+	}
+	updateCurrentWeatherCardsDOM();
 }

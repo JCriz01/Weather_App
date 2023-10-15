@@ -21,10 +21,12 @@ export function getWeatherAPIJson(weatherJson) {
 
 	weatherObj.forecast = weatherJson.forecast.forecastday;
 
+	weatherObj.currentInfo = weatherJson.current;
+
 	console.log('This is the object from weatherJson', weatherJson);
 	console.log('this is the object that we are using ', weatherObj);
 
-	return weatherObj;
+	//return weatherObj;
 }
 
 //getting api from the server
