@@ -1,8 +1,9 @@
-import { weatherObj, weather } from './weather';
+import { weatherObj, weather, getWeatherAPIJson } from './weather';
 
+const bodyContainer = document.querySelector('body');
 const weatherDataElem = document.querySelector('#weather-data');
 const forecastElem = document.querySelector('#forecast-wrapper');
-const currWeatherElem = document.querySelector('current-weather-wrapper');
+const currWeatherElem = document.querySelector('#current-weather-wrapper');
 
 export function createFirstTimePopUp() {
 	const bodyElem = document.querySelector('body');
@@ -85,6 +86,8 @@ export async function createLoadingIndicator() {
 		'rounded-lg',
 		'p-4'
 	);
+
+	container.setAttribute('id', 'loading-indicator');
 	imgElem.classList.add('animate-spin', 'w-7');
 	imgElem.src = '/Weather_App/spinningArrows.svg';
 
@@ -92,6 +95,10 @@ export async function createLoadingIndicator() {
 
 	container.appendChild(imgElem);
 	container.appendChild(textElem);
+
+	if (bodyContainer?.children[1].id === 'error-indicator') {
+		deleteErrorIndicator();
+	}
 
 	bodyElem?.insertBefore(container, bodyElem.lastElementChild);
 }
@@ -105,6 +112,58 @@ export function deleteLoadingIndicator() {
 	console.log(bodyElem?.children);
 
 	console.log('removing', targetElem);
+}
+
+function deleteErrorIndicator() {
+	const bodyElem = document.querySelector('body');
+
+	const targetElem = bodyElem?.children[1];
+
+	bodyElem?.removeChild(bodyElem?.children[1]!);
+	console.log(bodyElem?.children);
+
+	console.log('removing', targetElem);
+}
+
+function createErrorIndicator() {
+	const bodyElem = document.querySelector('body');
+
+	const parentElem = document.createElement('div');
+	parentElem.classList.add(
+		'bg-red-800',
+		'flex',
+		'flex-col',
+		'w-1/2',
+		'self-center',
+		'absolute',
+		'rounded-lg',
+		'items-center',
+		'bottom-1/2',
+		'p-2'
+	);
+
+	parentElem.setAttribute('id', 'error-indicator');
+
+	const headerElem = document.createElement('h1');
+	headerElem.classList.add('text-2xl');
+	headerElem.textContent = 'Error';
+
+	const container = document.createElement('div');
+	container.classList.add('flex');
+
+	const errorImg = document.createElement('img');
+	errorImg.classList.add('w-8');
+	errorImg.src = '/Weather_App/error.svg';
+	const pElem = document.createElement('p');
+	pElem.classList.add('text-center');
+	pElem.textContent = 'Unable to retrieve data, try again.';
+	container.appendChild(errorImg);
+	container.appendChild(pElem);
+
+	parentElem.appendChild(headerElem);
+	parentElem.appendChild(container);
+
+	bodyElem?.insertBefore(parentElem, bodyElem.lastElementChild);
 }
 
 export function DisplayFirstTimePopUp(): void {
@@ -136,14 +195,35 @@ export function isFirstVisit(): boolean {
 	}
 }
 
-export function showWeatherData(input: HTMLInputElement) {
-	const loadingIndicatorPromise = createLoadingIndicator();
-	const weatherDataPromise = weather(input.value);
+export async function showWeatherData(input: HTMLInputElement) {
+	let isValid = false;
+	function toggleWeatherData(isWeatherApiValid: boolean) {
+		if (isWeatherApiValid) {
+			weatherDataElem?.classList.remove('hidden');
+			currWeatherElem?.classList.remove('hidden');
+			forecastElem?.classList.remove('hidden');
+		} else {
+			weatherDataElem?.classList.add('hidden');
+			currWeatherElem?.classList.add('hidden');
+			forecastElem?.classList.add('hidden');
+		}
+	}
 
-	Promise.all([loadingIndicatorPromise, weatherDataPromise]).then(() => {
+	try {
+		const [loadingIndicatorPromise, weatherData] = await Promise.all([
+			createLoadingIndicator(),
+			weather(input.value)
+		]);
+
 		deleteLoadingIndicator();
-		weatherDataElem?.classList.remove('hidden');
-		currWeatherElem?.classList.remove('hidden');
-		forecastElem?.classList.remove('hidden');
-	});
+		getWeatherAPIJson(weatherData);
+		console.log(weatherData);
+		toggleWeatherData(true);
+	} catch (error) {
+		if (bodyContainer?.children[1].id === 'loading-indicator') {
+			deleteLoadingIndicator();
+		}
+		createErrorIndicator();
+		toggleWeatherData(false);
+	}
 }
