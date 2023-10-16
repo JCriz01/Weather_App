@@ -1,19 +1,32 @@
 ---
-import Forecastday from "./Forecastday.astro";
+import Forecastday from './Forecastday.astro';
 ---
 
-<div id="forecast-wrapper" class="hidden ">
-    <div class="flex flex-col p-1.5 rounded-xl bg-neutral-900 m-2 justify-evenly">
+<div id="forecast-wrapper" class="hidden">
+	<div class="m-2 flex flex-col justify-evenly rounded-xl bg-neutral-900 p-1.5">
+		<h1 class="text-base">3 Day Forecast</h1>
 
-        <h1 class="text-base ">3 Day Forecast</h1>
+		<div id="forecast-container" class="flex flex-col justify-evenly">
+			<Forecastday
+				imgSrc="/Weather_App/weathericons/day/113.png"
+				low="0°F"
+				high="0°F"
+				condition="Dusk"
+			/>
 
-        <div class="flex flex-col justify-evenly ">
+			<Forecastday
+				imgSrc="/Weather_App/weathericons/day/113.png"
+				low="0°F"
+				high="0°F"
+				condition="Dusk"
+			/>
 
-            <Forecastday imgSrc="/Weather_App/weathericons/day/113.png" low="0°F" high="0°F" condition="Dusk"/>
-
-            <Forecastday imgSrc="/Weather_App/weathericons/day/113.png" low="0°F" high="0°F" condition="Dusk"/>
-
-            <Forecastday imgSrc="/Weather_App/weathericons/day/113.png" low="0°F" high="0°F" condition="Dusk"/>
-        </div>
-    </div>
+			<Forecastday
+				imgSrc="/Weather_App/weathericons/day/113.png"
+				low="0°F"
+				high="0°F"
+				condition="Dusk"
+			/>
+		</div>
+	</div>
 </div>

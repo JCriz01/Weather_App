@@ -1,5 +1,7 @@
 import { weatherObj, weather, getWeatherAPIJson } from './weather';
 
+let isIntervalCalled: boolean = false;
+let intervalID: number;
 const bodyContainer = document.querySelector('body');
 const weatherDataElem = document.querySelector('#weather-data');
 const forecastElem = document.querySelector('#forecast-wrapper');
@@ -208,8 +210,9 @@ export async function showWeatherData(input: HTMLInputElement) {
 		deleteLoadingIndicator();
 		getWeatherAPIJson(weatherData);
 		//console.log(weatherData);
-		updateWeatherDOM();
 		toggleWeatherData(true);
+
+		updateWeatherDOM();
 	} catch (error) {
 		if (bodyContainer?.children[1].id === 'loading-indicator') {
 			deleteLoadingIndicator();
@@ -273,16 +276,82 @@ export function updateWeatherDOM() {
 
 		humidityElem.textContent = `${weatherObj.currentInfo.humidity}%`;
 
-		const currentTempList = document.querySelector('#current-temperature')
-			?.children;
+		const currentTempList: HTMLCollection | undefined = document.querySelector(
+			'#current-temperature'
+		)?.children;
+
 		console.log(currentTempList);
-		function currentDayHelper(
-			index: number,
-			imageSrc: string,
-			temperature: string
-		) {
-			const title = document.querySelector('');
+
+		function currentDayHelper(cardElem: HTMLDivElement, index: number) {
+			const weatherImg: HTMLImageElement | undefined = cardElem.children[1];
+
+			const FIRST_DAY = 0;
+			weatherImg.src =
+				weatherObj.forecast[FIRST_DAY].hour[index].condition.icon;
+
+			const currentDayTempElem: HTMLParagraphElement | undefined =
+				cardElem.children[2];
+			currentDayTempElem.textContent = `${weatherObj.forecast[FIRST_DAY].hour[index].temp_f}°F`;
 		}
+
+		currentDayHelper(currentTempList[0], 0);
+		currentDayHelper(currentTempList[1], 1);
+		currentDayHelper(currentTempList[2], 2);
+		currentDayHelper(currentTempList[3], 3);
+		currentDayHelper(currentTempList[4], 4);
 	}
+
 	updateCurrentWeatherCardsDOM();
+
+	function updateThreeDayForecastElems() {
+		const forecastList: HTMLCollection | undefined = document.querySelector(
+			'#forecast-container'
+		).children;
+
+		function forecastHelper(
+			cardElem: HTMLDivElement | undefined,
+			index: number
+		) {
+			const imageELem: HTMLImageElement = cardElem.children[0];
+
+			imageELem.src = weatherObj.forecast[index].day.condition.icon;
+
+			const tempContainer = cardElem.children[1];
+
+			const minTempElem = tempContainer.children[0];
+			minTempElem.textContent = `${weatherObj.forecast[index].day.mintemp_f}°F`;
+
+			const maxTempElem = tempContainer.children[2];
+			maxTempElem.textContent = `${weatherObj.forecast[index].day.maxtemp_f}°F`;
+
+			const condition = cardElem.children[2];
+
+			condition.textContent = weatherObj.forecast[index].day.condition.text;
+		}
+
+		forecastHelper(forecastList[0], 0);
+		forecastHelper(forecastList[1], 1);
+		forecastHelper(forecastList[2], 2);
+	}
+	updateThreeDayForecastElems();
+}
+
+export function WeatherApiDataLoop(input) {
+	const WEATHER_API_CALL_INTERVAL = 5000;
+
+	if (!isIntervalCalled) {
+		intervalID = setInterval(() => {
+			showWeatherData(input);
+		}, WEATHER_API_CALL_INTERVAL);
+		isIntervalCalled = true;
+	} else {
+		removeWeatherApiInterval();
+	}
+}
+
+export function removeWeatherApiInterval() {
+	if (isIntervalCalled) {
+		clearInterval(intervalID);
+		isIntervalCalled = false;
+	}
 }

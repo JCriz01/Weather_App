@@ -1,5 +1,10 @@
 import { weatherObj, weather } from './weather';
-import { DisplayFirstTimePopUp, showWeatherData } from './dom';
+import {
+	DisplayFirstTimePopUp,
+	showWeatherData,
+	WeatherApiDataLoop,
+	removeWeatherApiInterval
+} from './dom';
 
 const openBtn = document.getElementById('open-header-btn');
 
@@ -49,7 +54,12 @@ function main() {
 			Event.preventDefault();
 
 			showWeatherData(weatherInput);
+			WeatherApiDataLoop(weatherInput);
 		}
+	});
+
+	weatherInput?.addEventListener('input', () => {
+		removeWeatherApiInterval();
 	});
 
 	openBtn?.addEventListener('click', () => {
