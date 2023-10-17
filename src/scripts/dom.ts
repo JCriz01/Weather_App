@@ -1,6 +1,5 @@
-import { weatherObj, weather, getWeatherAPIJson } from './weather';
+import {getWeatherAPIJson, weather, weatherObj} from './weather';
 
-let isIntervalCalled: boolean = false;
 let intervalID: number;
 const bodyContainer = document.querySelector('body');
 const weatherDataElem = document.querySelector('#weather-data');
@@ -280,8 +279,6 @@ export function updateWeatherDOM() {
 			'#current-temperature'
 		)?.children;
 
-		console.log(currentTempList);
-
 		function currentDayHelper(cardElem: HTMLDivElement, index: number) {
 			const weatherImg: HTMLImageElement | undefined = cardElem.children[1];
 
@@ -334,24 +331,4 @@ export function updateWeatherDOM() {
 		forecastHelper(forecastList[2], 2);
 	}
 	updateThreeDayForecastElems();
-}
-
-export function WeatherApiDataLoop(input) {
-	const WEATHER_API_CALL_INTERVAL = 5000;
-
-	if (!isIntervalCalled) {
-		intervalID = setInterval(() => {
-			showWeatherData(input);
-		}, WEATHER_API_CALL_INTERVAL);
-		isIntervalCalled = true;
-	} else {
-		removeWeatherApiInterval();
-	}
-}
-
-export function removeWeatherApiInterval() {
-	if (isIntervalCalled) {
-		clearInterval(intervalID);
-		isIntervalCalled = false;
-	}
 }

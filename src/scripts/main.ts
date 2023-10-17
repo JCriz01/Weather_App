@@ -1,9 +1,7 @@
-import { weatherObj, weather } from './weather';
+import {weatherObj, weather, enableWeatherApiCall, disableWeatherApiCall, FetchAndUpdateDOMFromApi} from './weather';
 import {
 	DisplayFirstTimePopUp,
-	showWeatherData,
-	WeatherApiDataLoop,
-	removeWeatherApiInterval
+	showWeatherData
 } from './dom';
 
 const openBtn = document.getElementById('open-header-btn');
@@ -36,14 +34,21 @@ function isFirstVisit(): boolean {
 	}
 }
 
-function main() {
-	closeHeaderBtn?.setAttribute('disabled', 'true');
-	console.log(closeHeaderBtn?.hasAttribute('disabled'));
+function handleButtonEvents(){
+	openBtn?.addEventListener('click', () => {
+		openBtn?.classList.toggle('hidden');
 
-	if (isFirstVisit()) {
-		DisplayFirstTimePopUp();
-	}
+		container?.classList.toggle('hidden');
+	});
 
+	closeHeaderBtn?.addEventListener('click', () => {
+		if (!closeHeaderBtn.hasAttribute('disabled'))
+			container?.classList.toggle('hidden');
+		openBtn?.classList.toggle('hidden');
+	});
+}
+
+function handleWeatherSearchBtnEvent(){
 	weatherBtn?.addEventListener('click', (Event) => {
 		console.log('clicked');
 
@@ -52,28 +57,29 @@ function main() {
 			closeHeaderBtn?.classList.add('active:translate-y-1');
 
 			Event.preventDefault();
-
+			enableWeatherApiCall();
 			showWeatherData(weatherInput);
-			WeatherApiDataLoop(weatherInput);
+			console.log(weatherInput?.value);
+			FetchAndUpdateDOMFromApi(weatherInput?.value);
 		}
 	});
+}
+
+function main() {
+	closeHeaderBtn?.setAttribute('disabled', 'true');
+	console.log(closeHeaderBtn?.hasAttribute('disabled'));
+
+	if (isFirstVisit()) {
+		DisplayFirstTimePopUp();
+	}
+
+	handleWeatherSearchBtnEvent();
 
 	weatherInput?.addEventListener('input', () => {
-		removeWeatherApiInterval();
+		disableWeatherApiCall();
 	});
 
-	openBtn?.addEventListener('click', () => {
-		openBtn?.classList.toggle('hidden');
-
-		container?.classList.toggle('hidden');
-	});
-
-	closeHeaderBtn?.addEventListener('click', () => {
-		console.log(closeHeaderBtn.hasAttribute('disabled'));
-		if (!closeHeaderBtn.hasAttribute('disabled'))
-			container?.classList.toggle('hidden');
-		openBtn?.classList.toggle('hidden');
-	});
+	handleButtonEvents();
 }
 
 main();
