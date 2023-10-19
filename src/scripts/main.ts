@@ -1,7 +1,17 @@
-import {weatherObj, weather, enableWeatherApiCall, disableWeatherApiCall, FetchAndUpdateDOMFromApi} from './weather';
+import {
+	weatherObj,
+	weather,
+	enableWeatherApiCall,
+	disableWeatherApiCall,
+	FetchAndUpdateDOMFromApi,
+	getWeatherDataFromStorage,
+	addWeatherDataToStorage
+} from './weather';
 import {
 	DisplayFirstTimePopUp,
-	showWeatherData
+	showWeatherData,
+	updateWeatherDOM,
+	toggleWeatherData
 } from './dom';
 
 const openBtn = document.getElementById('open-header-btn');
@@ -34,7 +44,7 @@ function isFirstVisit(): boolean {
 	}
 }
 
-function handleButtonEvents(){
+function handleButtonEvents() {
 	openBtn?.addEventListener('click', () => {
 		openBtn?.classList.toggle('hidden');
 
@@ -48,15 +58,17 @@ function handleButtonEvents(){
 	});
 }
 
-function handleWeatherSearchBtnEvent(){
+function handleWeatherSearchBtnEvent() {
 	weatherBtn?.addEventListener('click', (Event) => {
 		console.log('clicked');
 
+		//start here
 		if (isInputValid(weatherInput)) {
 			closeHeaderBtn?.removeAttribute('disabled');
 			closeHeaderBtn?.classList.add('active:translate-y-1');
 
 			Event.preventDefault();
+			console.log('valid input');
 			enableWeatherApiCall();
 			showWeatherData(weatherInput);
 			console.log(weatherInput?.value);
@@ -71,6 +83,11 @@ function main() {
 
 	if (isFirstVisit()) {
 		DisplayFirstTimePopUp();
+	} else if (localStorage.getItem('weatherObj')) {
+		getWeatherDataFromStorage();
+		toggleWeatherData(true);
+		updateWeatherDOM();
+		FetchAndUpdateDOMFromApi(weatherObj.location.name);
 	}
 
 	handleWeatherSearchBtnEvent();

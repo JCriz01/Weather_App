@@ -4,26 +4,35 @@ import Hourlyforecast from './Hourlyforecast.astro';
 
 <div id="current-weather-wrapper" class="hidden">
 	<div class="m-2 flex flex-col">
-		<div id="current-weather-info" class="grid grid-cols-3 gap-2">
+		<div
+			id="current-weather-info"
+			class="grid grid-cols-3 justify-items-center gap-2"
+		>
 			<div
-				class="rounded-3xl p-7"
+				class="w-full min-w-fit rounded-3xl p-7 md:text-lg lg:w-3/4 lg:text-xl"
 				style=" background: rgb(131,58,180);
             background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); "
 			>
-				<div><img class="w-5" src="/Weather_App/pressure.svg" alt="" /></div>
+				<div>
+					<img
+						class="w-5 lg:w-7 2xl:w-10"
+						src="/Weather_App/pressure.svg"
+						alt=""
+					/>
+				</div>
 				<div class="">
 					<div>Wind</div>
 					<div id="wind-speed">0km/h</div>
 				</div>
 			</div>
 			<div
-				class="rounded-3xl p-7"
+				class="w-full min-w-fit rounded-3xl p-7 md:text-lg lg:w-3/4 lg:text-xl"
 				style=" background: rgb(131,58,180);
             background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); "
 			>
 				<div>
 					<img
-						class="w-5"
+						class="w-5 lg:w-7 2xl:w-10"
 						style=""
 						src="/Weather_App/thermometer-outline.svg"
 						alt=""
@@ -35,11 +44,17 @@ import Hourlyforecast from './Hourlyforecast.astro';
 				</div>
 			</div>
 			<div
-				class="rounded-3xl p-7"
+				class="w-full min-w-fit rounded-3xl p-7 md:text-lg lg:w-3/4 lg:text-xl"
 				style=" background: rgb(131,58,180);
             background: linear-gradient(248deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 52%, rgba(252,176,69,1) 100%); "
 			>
-				<div><img class="w-5" src="/Weather_App/water_drop.svg" alt="" /></div>
+				<div>
+					<img
+						class="w-5 lg:w-7 2xl:w-10"
+						src="/Weather_App/water_drop.svg"
+						alt=""
+					/>
+				</div>
 				<div class="">
 					<div>Humidity</div>
 					<div id="humidity">0%</div>

@@ -3,55 +3,59 @@ import Layout from '../layouts/Layout.astro';
 import MobileSwitcher from '../components/MobileSwitcher.astro';
 import CurrentWeather from '../components/CurrentWeather.astro';
 import Forecast from '../components/Forecast.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="SkySavvy">
-	<div class="flex flex-col">
-		<div id="header-container" class="m-2 rounded-xl bg-neutral-900 p-1.5">
-			<div class="flex">
-				<button
-					id="close-header-btn"
-					class="mr-2 flex w-6 animate-pulse rounded-lg text-base hover:scale-105
-					md:hidden"
-					style="background: rgb(228,94,94); background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);"
-				>
-					<img
-						class="self-center"
-						src="/Weather_App/close-layout.svg"
-						alt="close"
-					/>
-				</button>
+	<div
+		id="header-container"
+		class="m-2 flex items-center rounded-xl bg-neutral-900 p-2.5 md:h-16 md:text-lg lg:h-28 lg:text-xl 2xl:text-2xl"
+	>
+		<div class="flex w-full">
+			<button
+				id="close-header-btn"
+				class="mr-2 flex w-6 animate-pulse rounded-lg text-base hover:scale-105
+				md:hidden"
+				style="background: rgb(228,94,94); background: linear-gradient(198deg, rgba(228,94,94,1) 14%, rgba(51,136,138,1) 100%);"
+			>
+				<img
+					class="self-center"
+					src="/Weather_App/close-layout.svg"
+					alt="close"
+				/>
+			</button>
 
-				<form class="flex grow items-center justify-between">
-					<div class="flex">
-						<div class="text-black">
-							<input
-								required
-								pattern="^[^0-9]*$"
-								class="rounded-sm"
-								placeholder="Search For Area"
-								type="text"
-							/>
-						</div>
+			<form class="flex grow items-center justify-between">
+				<div class="flex">
+					<div class="text-black">
+						<input
+							required
+							pattern="^[^0-9]*$"
+							class="rounded-sm"
+							placeholder="Search For Area"
+							type="text"
+						/>
 					</div>
+				</div>
 
-					<button
-						id="weather-search"
-						type="submit"
-						class="rounded-lg px-3 py-1 text-base active:translate-y-1"
-						style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);"
-					>
-						Search
-					</button>
-				</form>
-			</div>
+				<button
+					id="weather-search"
+					type="submit"
+					class="rounded-lg px-3 py-1 text-base hover:scale-105 active:translate-y-1 md:text-lg lg:text-2xl lg:text-xl xl:text-3xl"
+					style="background: rgb(2, 0, 36); background: linear-gradient(210deg, rgba(2, 0, 36, 1) 0%, rgba(37, 195, 142, 1) 0%, rgba(0, 137, 255, 1) 71%);"
+				>
+					Search
+				</button>
+			</form>
 		</div>
+	</div>
 
+	<div class="flex flex-col p-2.5 md:flex-row">
 		<!--- hding the burger icon if the heading is visible -->
 
 		<div
 			id="weather-data"
-			class="relative m-2 flex hidden flex-col rounded-3xl"
+			class="relative m-2 flex hidden max-w-3xl flex-col self-center rounded-3xl"
 		>
 			<button id="open-header-btn" class="absolute hidden w-6 animate-pulse">
 				<img src="/Weather_App/burger-layout.svg" alt="burger-layout-icon" />
@@ -71,15 +75,22 @@ import Forecast from '../components/Forecast.astro';
 				>
 					0°F
 				</h1>
-				<div id="sub-weather-element" class="text-base">feels like __</div>
+				<div id="sub-weather-element" class="text-base md:text-lg">
+					feels like __
+				</div>
 			</div>
 		</div>
-		<CurrentWeather />
+		<div class="flex min-w-fit flex-1 flex-col md:justify-center">
+			<CurrentWeather />
 
-		<Forecast />
+			<Forecast />
+		</div>
 	</div>
 
-	<MobileSwitcher />
+	<div>
+		<MobileSwitcher />
+		<Footer />
+	</div>
 </Layout>
 
 <script src="../scripts/main.ts"></script>

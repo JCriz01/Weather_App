@@ -1,7 +1,7 @@
 //Weather object that will store information from weather API
-import {updateWeatherDOM} from "./dom.ts";
+import { updateWeatherDOM } from './dom.ts';
 
-export const weatherObj = {
+export let weatherObj = {
 	location: {
 		country: '',
 		name: '',
@@ -57,13 +57,12 @@ export async function weather(locationString: string | undefined) {
 let isIntervalCalled: boolean = false;
 
 export async function callWeatherApi(locationString: string | undefined) {
-
 	console.log('this is the location string, ', locationString);
 
 	await new Promise((resolve, reject) => {
 		fetch(
 			`https://api.weatherapi.com/v1/forecast.json?key=05e85c466c42486698e164552230608&q=${locationString}&days=3`,
-			{mode: 'cors'}
+			{ mode: 'cors' }
 		)
 			.then((response) => {
 				return response.json();
@@ -71,6 +70,7 @@ export async function callWeatherApi(locationString: string | undefined) {
 			.then((json) => {
 				getWeatherAPIJson(json);
 				console.log('calling api');
+				addWeatherDataToStorage();
 				resolve(weatherObj);
 			})
 			.catch((error) => {
@@ -94,7 +94,7 @@ export async function FetchAndUpdateDOMFromApi(location: string | undefined) {
 			console.log('api call finished, calling again');
 
 			setTimeout(() => {
-				FetchAndUpdateDOMFromApi(location)
+				FetchAndUpdateDOMFromApi(location);
 			}, 7000);
 		}
 	}
@@ -108,4 +108,12 @@ export function disableWeatherApiCall() {
 export function enableWeatherApiCall() {
 	isIntervalCalled = false;
 	console.log('allowing api call');
+}
+
+export function addWeatherDataToStorage() {
+	localStorage.setItem('weatherObj', JSON.stringify(weatherObj));
+}
+
+export function getWeatherDataFromStorage() {
+	weatherObj = JSON.parse(localStorage.getItem('weatherObj'));
 }

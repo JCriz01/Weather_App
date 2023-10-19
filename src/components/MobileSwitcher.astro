@@ -2,25 +2,18 @@
 
 ---
 
-<div 
-    class="bg-neutral-900 rounded-xl flex flex-col md:hidden ">
+<div class="flex flex-col rounded-xl bg-neutral-900 py-0.5 md:hidden">
+	<div class="flex justify-evenly">
+		<button>
+			<img class="w-8" src="/Weather_App/currentTemp.svg" alt="" />
+		</button>
+		<button>
+			<img class="w-8" src="/Weather_App/forecast.svg" alt="" />
+		</button>
+	</div>
 
-    <div class="flex justify-evenly ">
-        <button>
-            <img class="w-8 " src="/Weather_App/currentTemp.svg" alt="">
-        </button>
-        <button>
-            <img class="w-8 " src="/Weather_App/forecast.svg" alt="">
-        </button>
-    </div>
-
-    <div class="self-center flex w-3/4 h-1 ">
-        <div class="bg-white w-1/2 ">
-
-        </div>
-        <div class="bg-white w-1/2 hidden ">
-            
-        </div>
-    </div>
-
+	<div class="flex h-1 w-3/4 self-center">
+		<div class="w-1/2 bg-white"></div>
+		<div class="hidden w-1/2 bg-white"></div>
+	</div>
 </div>

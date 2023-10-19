@@ -1,6 +1,10 @@
-import {getWeatherAPIJson, weather, weatherObj} from './weather';
+import {
+	addWeatherDataToStorage,
+	getWeatherAPIJson,
+	weather,
+	weatherObj
+} from './weather';
 
-let intervalID: number;
 const bodyContainer = document.querySelector('body');
 const weatherDataElem = document.querySelector('#weather-data');
 const forecastElem = document.querySelector('#forecast-wrapper');
@@ -13,6 +17,7 @@ export function createFirstTimePopUp() {
 		'relative',
 		'h-4/5',
 		'w-2/3',
+		'md:w-fit',
 		'self-center',
 		'flex',
 		'flex-col',
@@ -78,6 +83,7 @@ export async function createLoadingIndicator() {
 	container.classList.add(
 		'flex',
 		'w-1/2',
+		'md:w-fit',
 		'justify-evenly',
 		'self-center',
 		'absolute',
@@ -107,9 +113,9 @@ export async function createLoadingIndicator() {
 export function deleteLoadingIndicator() {
 	const bodyElem = document.querySelector('body');
 
-	const targetElem = bodyElem?.children[1];
+	const targetElem = bodyElem?.children[2];
 
-	bodyElem?.removeChild(bodyElem?.children[1]!);
+	bodyElem?.removeChild(bodyElem?.children[2]!);
 	console.log(bodyElem?.children);
 
 	console.log('removing', targetElem);
@@ -135,6 +141,7 @@ function createErrorIndicator() {
 		'flex',
 		'flex-col',
 		'w-1/2',
+		'md:w-fit',
 		'self-center',
 		'absolute',
 		'rounded-lg',
@@ -186,19 +193,20 @@ export function DisplayFirstTimePopUp(): void {
 	});
 }
 
+export function toggleWeatherData(isWeatherApiValid: boolean) {
+	if (isWeatherApiValid) {
+		weatherDataElem?.classList.remove('hidden');
+		currWeatherElem?.classList.remove('hidden');
+		forecastElem?.classList.remove('hidden');
+	} else {
+		weatherDataElem?.classList.add('hidden');
+		currWeatherElem?.classList.add('hidden');
+		forecastElem?.classList.add('hidden');
+	}
+}
+
 export async function showWeatherData(input: HTMLInputElement) {
 	let isValid = false;
-	function toggleWeatherData(isWeatherApiValid: boolean) {
-		if (isWeatherApiValid) {
-			weatherDataElem?.classList.remove('hidden');
-			currWeatherElem?.classList.remove('hidden');
-			forecastElem?.classList.remove('hidden');
-		} else {
-			weatherDataElem?.classList.add('hidden');
-			currWeatherElem?.classList.add('hidden');
-			forecastElem?.classList.add('hidden');
-		}
-	}
 
 	try {
 		const [loadingIndicatorPromise, weatherData] = await Promise.all([
@@ -210,7 +218,7 @@ export async function showWeatherData(input: HTMLInputElement) {
 		getWeatherAPIJson(weatherData);
 		//console.log(weatherData);
 		toggleWeatherData(true);
-
+		addWeatherDataToStorage();
 		updateWeatherDOM();
 	} catch (error) {
 		if (bodyContainer?.children[1].id === 'loading-indicator') {
@@ -218,6 +226,43 @@ export async function showWeatherData(input: HTMLInputElement) {
 		}
 		createErrorIndicator();
 		toggleWeatherData(false);
+	}
+}
+
+function setWeatherCoverImage(inputString: string | undefined) {
+	const weatherTempImg: HTMLImageElement =
+		document.querySelector('#weather-image');
+
+	inputString = inputString?.toLowerCase();
+
+	if (inputString.includes('rain') || inputString.includes('drizzle')) {
+		//TODO: Find better image for rain conditions
+		weatherTempImg.src = '/Weather_App/sunny-forest.png';
+	}
+	if (inputString.includes('sunny')) {
+		weatherTempImg.src = '/Weather_App/sunny-forest.png';
+	}
+	if (inputString.includes('cloudy')) {
+		weatherTempImg.src = '/Weather_App/moonlight_city.png';
+	}
+
+	inputString.includes('overcast')
+		? (weatherTempImg.src = '/Weather_App/overcast.png')
+		: null;
+
+	if (inputString.includes('overcast')) {
+		weatherTempImg.src = '/Weather_App/overcast.png';
+	}
+	if (inputString.includes('snow') || inputString.includes('sleet')) {
+		weatherTempImg.src = '/Weather_App/snowy-mountain.png';
+	}
+
+	if (
+		inputString.includes('thundery') ||
+		inputString.includes('torrential') ||
+		inputString?.includes('heavy rain')
+	) {
+		weatherTempImg.src = '/Weather_App/thunder.png';
 	}
 }
 
@@ -231,36 +276,8 @@ export function updateWeatherDOM() {
 		document.querySelector('#weather-image');
 
 	const stringMatcher: string = weatherObj.condition;
-	if (
-		stringMatcher.includes('rain') ||
-		stringMatcher.includes('Rain') ||
-		stringMatcher.includes('Drizzle') ||
-		stringMatcher.includes('drizzle')
-	) {
-		//TODO: Find better image for rain conditions
-		weatherTempImg.src = '/Weather_App/sunny-forest.png';
-	}
-	if (stringMatcher.includes('Sunny') || stringMatcher.includes('sunny')) {
-		weatherTempImg.src = '/Weather_App/sunny-forest.png';
-	}
-	if (stringMatcher.includes('cloudy') || stringMatcher.includes('Cloudy')) {
-		weatherTempImg.src = '/Weather_App/moonlight_city.png';
-	}
-	if (
-		stringMatcher.includes('Overcast') ||
-		stringMatcher.includes('overcast')
-	) {
-		//TODO: Place holder for actual image source on overcast condition
-		weatherTempImg.src = '/Weather_App/';
-	}
-	if (
-		stringMatcher.includes('Snow') ||
-		stringMatcher.includes('snow') ||
-		stringMatcher.includes('Sleet') ||
-		stringMatcher.includes('sleet')
-	) {
-		weatherTempImg.src = '/Weather_App/snowy-mountain.png';
-	}
+
+	setWeatherCoverImage(stringMatcher);
 
 	function updateCurrentWeatherCardsDOM() {
 		const windSpeedElem: HTMLDivElement = document.querySelector('#wind-speed');
